@@ -154,6 +154,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       preco: preco,
       image: base64Image,
     });
+    addPresentModal.style.display = 'none';
   };
 
   async function buscardados() {
