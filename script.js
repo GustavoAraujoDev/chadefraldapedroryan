@@ -11,12 +11,12 @@ import {
 
 // Configuração do Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyAXDfdRG9H2rK2mEnCUaXLMVuHObWfvCsE",
-  authDomain: "testes-19dc4.firebaseapp.com",
-  projectId: "testes-19dc4",
-  storageBucket: "testes-19dc4.appspot.com",
-  messagingSenderId: "400866154921",
-  appId: "1:400866154921:web:ba0e427bf2243030334cb8",
+  apiKey: "AIzaSyB8pm4uG001PSBB7isdxVXCP97UjkS3Ip0",
+  authDomain: "chadefraldapedroryan.firebaseapp.com",
+  projectId: "chadefraldapedroryan",
+  storageBucket: "chadefraldapedroryan.appspot.com",
+  messagingSenderId: "773248475181",
+  appId: "1:773248475181:web:202384eea8ff4479f7d8a4",
 };
 
 // Inicializa o Firebase
@@ -112,11 +112,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Simulação de login fictício
     if (username === "admin" && password === "1234") {
-      console.log("Login bem-sucedido para adicionar presente");
+      toastr.success("Login bem-sucedido para adicionar presente");
       loginModalAddPresent.style.display = "none"; // Fecha o modal de login
       addPresentModal.style.display = "flex"; // Abre o modal de adicionar presente
     } else {
-      alert("Usuário ou senha incorretos.");
+      toastr.error("Usuário ou senha incorretos.");
     }
   };
 
@@ -129,33 +129,123 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Simulação de login fictício
     if (username === "financeiro" && password === "12345") {
-      console.log("Login bem-sucedido para atualizar pagamentos");
+      toastr.success("Login bem-sucedido para atualizar pagamentos");
       loginModalUpdatePayments.style.display = "none"; // Fecha o modal de login
       listarComprasPendentes(); // Lista as compras pendentes
       listarComprasConcluidas();
+      listadepresentesprivado();
       paymentsModal.style.display = "flex"; // Abre o modal de pagamentos
     } else {
-      alert("Usuário ou senha incorretos.");
+      toastr.error("Usuário ou senha incorretos.");
     }
   };
+
+  // Função para validar os campos de entrada
+  function validateInputs(nomePresente, preco, base64Image) {
+    if (!nomePresente) {
+      toastr.error("Por favor, insira o nome do presente.");
+      return false;
+    }
+    if (!preco) {
+      toastr.error("Por favor, insira o preço do presente.");
+      return false;
+    }
+    if (isNaN(preco) || parseFloat(preco) <= 0) {
+      toastr.error("Por favor, insira um preço válido e maior que zero.");
+      return false;
+    }
+    if (!base64Image || base64Image.includes("index.html")) {
+      toastr.error("Por favor, adicione uma imagem do presente.");
+      return false;
+    }
+    return true;
+  }
 
   // Salvar presente na lista
   document.getElementById("savePresentBtn").onclick = async function () {
     var id = idgerador();
-    var nomePresente = document.getElementById("presente").value;
-    var preco = document.getElementById("price").value;
-    var base64Image = imagePreview.src; // Obtém a imagem em base64
+    var nomePresente = document.getElementById("presente").value.trim();
+    var preco = document.getElementById("price").value.trim();
+    var base64Image = imagePreview.src;
+
+    // Validar entradas
+    if (!validateInputs(nomePresente, preco, base64Image)) {
+      return; // Interrompe se a validação falhar
+    }
 
     console.log("Salvando presente:", nomePresente, preco);
 
-    const presenteref = ref(database, `Presente/${id}`);
-    await set(presenteref, {
-      nome: nomePresente,
-      preco: preco,
-      image: base64Image,
-    });
-    addPresentModal.style.display = 'none';
+    try {
+      const presenteref = ref(database, `Presente/${id}`);
+      await set(presenteref, {
+        nome: nomePresente,
+        preco: parseFloat(preco), // Armazena o preço como um número
+        image: base64Image,
+      });
+
+      // Fecha o modal e mostra sucesso
+      addPresentModal.style.display = "none";
+      toastr.success("Presente adicionado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao salvar o presente:", error);
+      toastr.error("Erro ao salvar o presente. Tente novamente mais tarde.");
+    }
   };
+
+  async function listadepresentesprivado() {
+    // Lista de presentes de exemplo
+    console.log("Buscando dados dos presentes...");
+    const presenteref = ref(database, "Presente"); // Referência ao caminho no banco de dados
+    const snapshot = await get(presenteref); // Obtém os dados do caminho referenciado
+    console.log("Snapshot obtido:", snapshot.val());
+
+    var lista = document.getElementById("presentesList"); // Seleciona o elemento da lista
+    lista.innerHTML = ""; // Limpa a lista antes de adicionar novos itens
+
+    if (snapshot.exists()) {
+      const dados = snapshot.val(); // Obtém os dados
+      for (const [key, value] of Object.entries(dados)) {
+        // Itera sobre os dados
+        var h3 = document.createElement("h3"); // Cria um novo item de lista
+        var img = document.createElement("img");
+        var p = document.createElement("p");
+        // Corrige a referência para acessar a imagem corretamente
+        img.src = value.image; // Acessa a imagem no valor atual
+        img.alt = "Imagem do presente"; // Texto alternativo para a imagem
+        img.style.maxWidth = "200px"; // Limita o tamanho da imagem
+        console.log(img);
+        h3.textContent = `${value.nome}`; // Define o texto do item
+        p.textContent = `R$ ${parseFloat(value.preco).toFixed(2)}`;
+        console.log("Item de lista criado:", h3.textContent);
+        // Cria um botão "Selecionar"
+        const button = document.createElement("button");
+
+        button.textContent = "Excluir";
+        button.onclick = () => {
+          deletepresentes(key); // Chama uma função para abrir o modal
+        };
+        lista.appendChild(img);
+        lista.appendChild(h3); // Adiciona o item à lista
+        lista.appendChild(p); // Adiciona o item à lista
+        lista.appendChild(button); // Adiciona o botão ao item da lista
+      }
+    }
+  }
+
+  async function deletepresentes(id) {
+    const presenteref = ref(database, `Presente/${id}`); // Referência ao caminho no banco de dados
+    const confirmacao = window.confirm("tem certeza confimar o pagamento?");
+    if (confirmacao) {
+      try {
+        await remove(presenteref); // Obtém os dados do caminho referenciado
+        paymentsModal.style.display = "none";
+        toastr.success("Presente deletado com sucesso");
+      } catch (error) {
+        toastr.error("error ao deletar");
+        console.error(error);
+      }
+    }
+  }
 
   async function buscardados() {
     // Lista de presentes de exemplo
@@ -210,14 +300,52 @@ document.addEventListener("DOMContentLoaded", async function () {
     confirmModal.style.display = "flex"; // Abre o modal de confirmação
   }
 
+  // Função para validar os campos de compra
+  function validatePurchaseInputs(fullName, phoneNumber) {
+    // Verifica se o nome completo foi inserido e contém pelo menos dois componentes
+    const nomeDividido = fullName.trim().split(" ");
+    if (nomeDividido.length < 2) {
+      toastr.error("Por favor, insira seu nome completo (nome e sobrenome).");
+      return false;
+    }
+    // Verifica se o número de telefone foi inserido
+    if (!fullName) {
+      toastr.error("Por favor, insira seu nome completo.");
+      return false;
+    }
+
+    // Verifica se o número de telefone foi inserido
+    if (!phoneNumber) {
+      toastr.error("Por favor, insira seu número de telefone.");
+      return false;
+    }
+
+    // Validação do formato do número de telefone (aceita números com 8 ou 9 dígitos)
+    const phonePattern = /^\(\d{2}\) \d{4,5}-\d{4}$/; // Exemplo: (11) 91234-5678 ou (11) 1234-5678
+    if (!phonePattern.test(phoneNumber)) {
+      toastr.error(
+        "Por favor, insira um número de telefone válido no formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX."
+      );
+      return false;
+    }
+
+    return true; // Se tudo estiver certo, retorna verdadeiro
+  }
+
   // Confirmar compra
   document.getElementById("confirmPurchaseBtn").onclick = async function () {
     const key = idgerador();
-    var fullName = document.getElementById("fullName").value;
-    var phoneNumber = document.getElementById("phoneNumber").value;
+    var fullName = document.getElementById("fullName").value.trim();
+    var phoneNumber = document.getElementById("phoneNumber").value.trim();
 
-    if (fullName && phoneNumber) {
-      console.log("Confirmando compra:", fullName, phoneNumber);
+    // Validar entradas
+    if (!validatePurchaseInputs(fullName, phoneNumber)) {
+      return; // Interrompe se a validação falhar
+    }
+
+    console.log("Confirmando compra:", fullName, phoneNumber);
+
+    try {
       const comprasref = ref(database, `Compras/${key}`);
       await set(comprasref, {
         nome: fullName,
@@ -238,8 +366,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       // Fechar o modal de confirmação e abrir o de pagamento
       confirmModal.style.display = "none";
       pixModal.style.display = "flex";
-    } else {
-      alert("Por favor, insira o nome completo e o número de telefone.");
+      toastr.success("Compra salva com sucesso!"); // Corrigido para 'success'
+    } catch (error) {
+      console.error("Erro ao salvar a compra:", error);
+      toastr.error("Erro ao salvar a compra. Tente novamente mais tarde.");
     }
   };
 
@@ -259,14 +389,28 @@ document.addEventListener("DOMContentLoaded", async function () {
             var li = document.createElement("li");
             li.textContent = `${compra.nome} - ${compra.presente} - R$ ${compra.preco} - ${compra.telefone} - ${compra.status}`;
             listaPagamentos.appendChild(li);
-
+            window;
             const button = document.createElement("button");
             button.textContent = "Confirmar Pagamento";
+
             button.onclick = async () => {
-              await update(ref(database, `Compras/${key}`), {
-                status: "pagamento concluído",
-              });
-              listarComprasPendentes(); // Atualiza a lista após confirmar
+              const confirmacao = window.confirm(
+                "tem certeza confimar o pagamento?"
+              );
+              if (confirmacao) {
+                try {
+                  await update(ref(database, `Compras/${key}`), {
+                    status: "pagamento concluído",
+                  });
+                  listarComprasPendentes(); // Atualiza a lista após confirmar
+                  toastr.success("Pagamento confirmado com sucesso!"); // Mensagem de sucesso
+                } catch (error) {
+                  console.error("Erro ao atualizar o status da compra:", error);
+                  toastr.error(
+                    "Erro ao atualizar o status. Tente novamente mais tarde."
+                  ); // Mensagem de erro
+                }
+              }
             };
 
             listaPagamentos.appendChild(button);
@@ -331,6 +475,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     } catch (error) {
       console.error("Erro ao listar compras Concluidas:", error);
+      toast.error("Erro ao listar compras Concluidas:", error);
     }
   }
 
@@ -344,6 +489,14 @@ document.addEventListener("DOMContentLoaded", async function () {
       listaPagamentos.innerHTML = "";
       const searchPhoneNumber =
         document.getElementById("searchPhoneNumber").value;
+      // Validação simples para o formato do número de telefone
+      const phonePattern = /^\(\d{2}\) \d{4,5}-\d{4}$/; // Exemplo: (11) 91234-5678
+      if (!phonePattern.test(searchPhoneNumber)) {
+        toastr.error(
+          "Por favor, insira um número de telefone válido no formato (XX) XXXXX-XXXX."
+        );
+        return false;
+      }
       if (snapshot.exists()) {
         const compras = snapshot.val();
         for (const [key, compra] of Object.entries(compras)) {
@@ -392,14 +545,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     pixKey.select();
     pixKey.setSelectionRange(0, 99999); // Para dispositivos móveis
     document.execCommand("copy");
-    alert("Copiado: " + pixKey.value);
+    toastr.success("Copiado: " + pixKey.value);
   };
 
   copybtncopia.onclick = function () {
     pixCopyPaste.select();
     pixCopyPaste.setSelectionRange(0, 99999); // Para dispositivos móveis
     document.execCommand("copy");
-    alert("Copiado: " + pixCopyPaste.value);
+    toastr.success("Copiado: " + pixCopyPaste.value);
   };
 
   // Função para pré-visualizar a imagem

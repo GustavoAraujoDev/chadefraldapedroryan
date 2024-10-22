@@ -129,7 +129,9 @@ button {
     border-radius: 5px;
     width: 80%;
     max-width: 500px;
+    max-height: 80vh;
     text-align: center;
+    overflow-y: auto;
 }
 
 .modal-content h2 {
