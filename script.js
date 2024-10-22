@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       toastr.error("Por favor, insira um preço válido e maior que zero.");
       return false;
     }
-    if (!base64Image || base64Image.includes("index.html")) {
+    if (!base64Image || base64Image.includes(".vercel.app")) {
       toastr.error("Por favor, adicione uma imagem do presente.");
       return false;
     }
