@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Chá de Fralda</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Topo com imagem principal -->
+    <section class="header">
+        <div>
+            <h1>Bem-vindo ao Chá de Fralda do Pedro Ryan</h1>
+            <button>Ver Presentes</button>
+        </div>
+    </section>
+
+    <!-- Botões principais -->
+    <div class="action-buttons">
+        <button id="addPresentBtn">Adicionar Presente</button>
+        <button id="updatePaymentsBtn">Atualizar Pagamentos</button>
+        <button id="searchInfoBtn">Buscar Informações</button>
+    </div>
+
+    <!-- Seção de coleção de presentes -->
+    <section class="collection-section">
+        <h2>Coleção de Presentes</h2>
+        <div id="collection" class="collection">
+            <div id="collection-item" class="collection-item">
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Modais -->
+    <div id="addPresentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Adicionar Presente</h2>
+            <label for="presente">Nome do Presente:</label>
+            <input type="text" id="presente" name="presente">
+            <label for="price">Preço do Presente:</label>
+            <input type="text" id="price" name="price">
+            <label for="imageUpload">Adicionar Foto do Presente:</label>
+            <input type="file" id="imageUpload" accept="image/*" required>
+
+            <!-- Pré-visualização da Imagem -->
+            <div id="imagePreview" style="margin-top: 10px;">
+                <img id="preview" src="" alt="Pré-visualização da Imagem"
+                    style="max-width: 250px; align-items: center;  justify-content: center;  display: none;">
+            </div>
+            <button id="savePresentBtn">Salvar Presente</button>
+        </div>
+    </div>
+
+    <div id="loginModalUpdatePayments" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login para Atualizar Pagamentos</h2>
+            <label for="usernameUpdate">Usuário:</label>
+            <input type="text" id="usernameUpdate"><br><br>
+            <label for="passwordUpdate">Senha:</label>
+            <input type="password" id="passwordUpdate"><br><br>
+            <button id="loginBtnUpdatePayments">Login</button>
+        </div>
+    </div>
+
+    <div id="loginModalAddPresent" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login para Atualizar Pagamentos</h2>
+            <label for="usernameUpdate">Usuário:</label>
+            <input type="text" id="usernameAdd"><br><br>
+            <label for="passwordUpdate">Senha:</label>
+            <input type="password" id="passwordAdd"><br><br>
+            <button id="loginBtnAddPresent">Login</button>
+        </div>
+    </div>
+
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Buscar Informações</h2>
+            <label for="phone">Número de Telefone:</label>
+            <input type="tel" id="searchPhoneNumber" name="phone" placeholder="(11) 91234-5678"
+                pattern="\(\d{2}\) \d{4,5}-\d{4}" required>
+            <button id="searchBtn">Buscar Informações</button>
+            <div id="phonePaymentsList"></div>
+        </div>
+    </div>
+
+    <div id="paymentsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>lista de Pagamentos</h3>
+            <h4>Pendentes</h4>
+            <div id="pendingPaymentsList"></div>
+            <h4>Concluídos</h4>
+            <div id="checkPaymentsList"></div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Confirmar compra</h2>
+            <p id="confirmText"></p>
+
+            <label for="name">Nome Completo:</label>
+            <input type="text" id="fullName" name="name" placeholder="Digite seu nome completo" required>
+
+            <label for="phone">Número de Telefone:</label>
+            <input type="tel" id="phoneNumber" name="phone" placeholder="(11) 91234-5678"
+                pattern="\(\d{2}\) \d{4,5}-\d{4}">
+
+            <button class="btn-confirm" id="confirmPurchaseBtn">Confirmar compra</button>
+            <button class="btn-cancel">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="pixModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Pagamento PIX</h2>
+            <div class="qr-code">
+                <img src="qr-code-exemplo.png" alt="QR Code do PIX" width="200" height="200">
+            </div>
+            <div>
+                <label>Chave PIX:</label>
+                <input type="text" id="pixKey" class="input-field" value="88999978890" readonly>
+                <button id="copy-btnchave" class="copy-btn" onclick="copyToClipboard('pixKey')">Copiar Chave
+                    PIX</button>
+            </div>
+            <div>
+                <label>PIX Copia e Cola:</label>
+                <input type="text" id="pixCopyPaste" class="input-field"
+                    value="00020126360014BR.GOV.BCB.PIX011412345678902520400005303986540410005802BR5920Nome Exemplo6008BRASILIA62290525gDHJYUTrHfgyrqQ62800301D00000000000000000000000000000000000000"
+                    readonly>
+                <button id="copy-btncopia" class="copy-btn" onclick="copyToClipboard('pixCopyPaste')">Copiar PIX Copia e
+                    Cola</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de história -->
+    <section class="story-section">
+        <h2>Nossa História</h2>
+        <p>Estamos muito felizes em anunciar a chegada do nosso bebê, Pedro Ryan! Criamos este chá de fralda online para
+            facilitar a escolha de presentes, e agradecemos a todos que estão participando deste momento especial
+            conosco.</p>
+    </section>
+
+    <!-- Seção de história -->
+    <section class="story-section">
+        <h2>Dicas de Presentes</h2>
+        <p>1. <span>Brinquedos Educativos:</span> Presentes que estimulam a criatividade e o aprendizado são sempre uma
+            boa escolha.</p>
+        <p>2. <span>Roupas Confortáveis:</span> Escolher peças macias e confortáveis garante que o bebê se sinta bem.
+        </p>
+        <p>3. <span>Livros Infantis:</span> Livros são ótimos para desenvolver o hábito da leitura desde cedo.</p>
+        <p>4. <span>Carrinho de Bebê:</span> Um presente prático que facilita a vida dos pais no dia a dia.</p>
+        <p>5. <span>Kit de Higiene:</span> Essencial para o cuidado diário do bebê, sempre útil.</p>
+    </section>
+
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>
