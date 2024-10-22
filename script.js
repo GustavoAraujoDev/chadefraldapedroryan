@@ -569,4 +569,35 @@ document.addEventListener("DOMContentLoaded", async function () {
       imagePreview.style.display = "none"; // Oculta a pré-visualização se não houver imagem
     }
   });
+
+  function aplicarMascaraTelefone(event) {
+    let input = event.target;
+    let valor = input.value.replace(/\D/g, ""); // Remove tudo que não é número
+
+    // Limita o número de dígitos a 11 (2 para o DDD + 9 para o número de telefone)
+    if (valor.length > 11) {
+      valor = valor.substring(0, 11);
+    }
+
+    let valorFormatado = "";
+
+    if (valor.length > 0) {
+      valorFormatado = "(" + valor.substring(0, 2); // Adiciona o DDD
+    }
+    if (valor.length >= 3) {
+      valorFormatado += ") " + valor.substring(2, 7); // Adiciona espaço e primeiros cinco números
+    }
+    if (valor.length >= 8) {
+      valorFormatado += "-" + valor.substring(7, 11); // Adiciona o hífen e últimos quatro números
+    }
+
+    input.value = valorFormatado; // Atualiza o valor do input
+  }
+
+  document
+    .getElementById("searchPhoneNumber")
+    .addEventListener("input", aplicarMascaraTelefone);
+  document
+    .getElementById("phoneNumber")
+    .addEventListener("input", aplicarMascaraTelefone);
 });
