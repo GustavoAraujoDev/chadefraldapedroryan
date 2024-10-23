@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Cria um botão "Selecionar"
         const button = document.createElement("button");
 
-        button.textContent = "Excluir";
+        button.innerHTML = `<i class="bi bi-file-earmark-x"></i> Excluir`;
         button.onclick = () => {
           deletepresentes(key); // Chama uma função para abrir o modal
         };
