@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Chá de Fralda</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  />
     <link rel="stylesheet" href="styles.css">
+
 </head>
 
 <body>
@@ -15,14 +20,12 @@
     <section class="header">
         <div>
             <h1>Bem-vindo ao Chá de Fralda do Pedro Ryan</h1>
-            <button>Ver Presentes</button>
+            <button class="left-button" id="settings"><i class="bi bi-gear"></i> Configurações</button>
         </div>
     </section>
 
     <!-- Botões principais -->
     <div class="action-buttons">
-        <button id="addPresentBtn">Adicionar Presente</button>
-        <button id="updatePaymentsBtn">Atualizar Pagamentos</button>
         <button id="searchInfoBtn">Buscar Informações</button>
     </div>
 
@@ -87,7 +90,7 @@
             <h2>Buscar Informações</h2>
             <label for="phone">Número de Telefone:</label>
             <input type="tel" id="searchPhoneNumber" name="phone" placeholder="(11) 91234-5678"
-            pattern="\(\d{2}\) \d{4,5}-\d{4}" required> 
+                pattern="\(\d{2}\) \d{4,5}-\d{4}" required>
             <button id="searchBtn">Buscar Informações</button>
             <div id="phonePaymentsList"></div>
         </div>

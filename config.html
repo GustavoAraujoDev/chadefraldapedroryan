@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Botões principais -->
+    <div class="action-buttons">
+        <button id="addPresentBtn">Adicionar Presente</button>
+        <button id="updatePaymentsBtn">Atualizar Pagamentos</button>
+    </div>
+
+    <!-- Modais -->
+    <div id="addPresentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Adicionar Presente</h2>
+            <label for="presente">Nome do Presente:</label>
+            <input type="text" id="presente" name="presente">
+            <label for="price">Preço do Presente:</label>
+            <input type="text" id="price" name="price">
+            <label for="imageUpload">Adicionar Foto do Presente:</label>
+            <input type="file" id="imageUpload" accept="image/*" required>
+
+            <!-- Pré-visualização da Imagem -->
+            <div id="imagePreview" style="margin-top: 10px;">
+                <img id="preview" src="" alt="Pré-visualização da Imagem"
+                    style="max-width: 250px; align-items: center;  justify-content: center;  display: none;">
+            </div>
+            <button id="savePresentBtn">Salvar Presente</button>
+        </div>
+    </div>
+
+    <div id="paymentsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>lista de Pagamentos</h3>
+            <h4>Pendentes</h4>
+            <div id="pendingPaymentsList"></div>
+            <h4>Concluídos</h4>
+            <div id="checkPaymentsList"></div>
+            <h4>lista de presentes</h4>
+            <div id="presentesList"></div>
+        </div>
+    </div>
+
+    <script type="module" src="scriptconfig.js"></script>
+</body>
+
+</html>
