@@ -26,7 +26,7 @@
 
     <!-- Botões principais -->
     <div class="action-buttons">
-        <button id="searchInfoBtn">Buscar Informações</button>
+        <button id="searchInfoBtn"><i class="bi bi-info-circle"></i> Buscar Informações</button>
     </div>
 
     <!-- Seção de coleção de presentes -->
@@ -56,7 +56,7 @@
                 <img id="preview" src="" alt="Pré-visualização da Imagem"
                     style="max-width: 250px; align-items: center;  justify-content: center;  display: none;">
             </div>
-            <button id="savePresentBtn">Salvar Presente</button>
+            <button id="savePresentBtn"><i class="bi bi-floppy"></i> Salvar Presente</button>
         </div>
     </div>
 
@@ -80,7 +80,7 @@
             <input type="text" id="usernameAdd"><br><br>
             <label for="passwordUpdate">Senha:</label>
             <input type="password" id="passwordAdd"><br><br>
-            <button id="loginBtnAddPresent">Login</button>
+            <button id="loginBtnAddPresent"><i class="bi bi-box-arrow-right"></i> Login</button>
         </div>
     </div>
 
@@ -91,7 +91,7 @@
             <label for="phone">Número de Telefone:</label>
             <input type="tel" id="searchPhoneNumber" name="phone" placeholder="(11) 91234-5678"
                 pattern="\(\d{2}\) \d{4,5}-\d{4}" required>
-            <button id="searchBtn">Buscar Informações</button>
+            <button id="searchBtn"><i class="bi bi-info-circle"></i> Buscar Informações</button>
             <div id="phonePaymentsList"></div>
         </div>
     </div>
@@ -122,7 +122,7 @@
             <input type="tel" id="phoneNumber" name="phone" placeholder="(11) 91234-5678"
                 pattern="\(\d{2}\) \d{4,5}-\d{4}">
 
-            <button class="btn-confirm" id="confirmPurchaseBtn">Confirmar compra</button>
+            <button class="btn-confirm" id="confirmPurchaseBtn"><i class="bi bi-check-circle"></i> Confirmar compra</button>
             <button class="btn-cancel">Cancelar</button>
         </div>
     </div>
@@ -137,7 +137,7 @@
             <div>
                 <label>Chave PIX:</label>
                 <input type="text" id="pixKey" class="input-field" value="88999978890" readonly>
-                <button id="copy-btnchave" class="copy-btn" onclick="copyToClipboard('pixKey')">Copiar Chave
+                <button id="copy-btnchave" class="copy-btn" onclick="copyToClipboard('pixKey')"><i class="bi bi-clipboard-check"></i> Copiar Chave
                     PIX</button>
             </div>
             <div>
@@ -145,7 +145,7 @@
                 <input type="text" id="pixCopyPaste" class="input-field"
                     value="00020126360014BR.GOV.BCB.PIX011412345678902520400005303986540410005802BR5920Nome Exemplo6008BRASILIA62290525gDHJYUTrHfgyrqQ62800301D00000000000000000000000000000000000000"
                     readonly>
-                <button id="copy-btncopia" class="copy-btn" onclick="copyToClipboard('pixCopyPaste')">Copiar PIX Copia e
+                <button id="copy-btncopia" class="copy-btn" onclick="copyToClipboard('pixCopyPaste')"><i class="bi bi-clipboard-check"></i> Copiar PIX Copia e
                     Cola</button>
             </div>
         </div>

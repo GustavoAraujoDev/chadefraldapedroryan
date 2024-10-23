@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Cria um botão "Selecionar"
         const button = document.createElement("button");
 
-        button.textContent = "Selecionar";
+        button.innerHTML = `<i class="bi bi-check2-circle"></i> Selecionar`;
         button.onclick = () => {
           selecionarPresente(value.nome, value.preco); // Chama uma função para abrir o modal
         };
